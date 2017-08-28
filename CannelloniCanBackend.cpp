@@ -1,8 +1,8 @@
-#include <CannelloniCanBackend.h>
+#include "CannelloniCanBackend.h"
 
-#include <UdpServer.h>
+#include "UdpServer.h"
 
-#include <cannelloni/parser.h>
+#include "cannelloni/parser.h"
 
 #include <QVector>
 

@@ -1,8 +1,8 @@
 #ifndef CANNELLONICANBACKEND_H_
 #define CANNELLONICANBACKEND_H_
 
-#include <QtSerialBus/QCanBusDevice>
-#include <QtSerialBus/QCanBusFrame>
+#include <QCanBusDevice>
+#include <QCanBusFrame>
 #include <QUrl>
 #include <QVector>
 
@@ -12,6 +12,7 @@
 
 class CannelloniCanBackend : public QCanBusDevice
 {
+    Q_OBJECT
 public:
     CannelloniCanBackend(QUrl local_, QUrl remote_);
     virtual ~CannelloniCanBackend();
