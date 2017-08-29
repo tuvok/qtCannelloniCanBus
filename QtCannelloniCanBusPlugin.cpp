@@ -13,7 +13,8 @@ class QtCannelloniCanBusPlugin : public QObject, public QCanBusFactory
     Q_INTERFACES(QCanBusFactory)
 
 public:
-    QCanBusDevice *createDevice(const QString &interfaceName, QString *errorMessage) const override
+    QCanBusDevice* createDevice(const QString& interfaceName,
+                                QString* errorMessage) const override
     {
         Q_UNUSED(errorMessage);
         QStringList urls = interfaceName.split(QChar::Null);
@@ -23,7 +24,7 @@ public:
 
         std::cout << "URL1: " << urls[0].toStdString() << std::endl;
         std::cout << "URL2: " << urls[1].toStdString() << std::endl;
-        
+
         return new CannelloniCanBackend(urls[0], urls[1]);
     }
 };

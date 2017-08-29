@@ -17,9 +17,8 @@ public:
     CannelloniCanBackend(QUrl local_, QUrl remote_);
     virtual ~CannelloniCanBackend();
 
-
-    virtual bool writeFrame(const QCanBusFrame &frame);
-    virtual QString interpretErrorFrame(const QCanBusFrame &errorFrame);
+    virtual bool writeFrame(const QCanBusFrame& frame);
+    virtual QString interpretErrorFrame(const QCanBusFrame& errorFrame);
 
 protected:
     virtual bool open();

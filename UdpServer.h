@@ -18,9 +18,9 @@
 #include <iostream>
 #include <string>
 
+#include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/asio.hpp>
 
 using boost::asio::ip::udp;
 
@@ -28,9 +28,10 @@ class UdpServer
 {
 public:
     UdpServer(boost::asio::io_service& io_service,
-            std::function<void(std::array<uint8_t, 1500>, std::size_t)> handlePacket_,
-            unsigned int port) :
-                socket_(io_service, udp::endpoint(udp::v4(), port))
+              std::function<void(std::array<uint8_t, 1500>, std::size_t)>
+                  handlePacket_,
+              unsigned int port)
+        : socket_(io_service, udp::endpoint(udp::v4(), port))
     {
         start_receive();
     }
@@ -39,8 +40,8 @@ private:
     void start_receive()
     {
         socket_.async_receive_from(
-                boost::asio::buffer(recv_buffer_), remote_endpoint_,
-                boost::bind(&UdpServer::handle_receive, this,
+            boost::asio::buffer(recv_buffer_), remote_endpoint_,
+            boost::bind(&UdpServer::handle_receive, this,
                         boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
     }
@@ -60,6 +61,5 @@ private:
     std::array<uint8_t, 1500> recv_buffer_;
     std::function<void(std::array<uint8_t, 1500>, std::size_t)> handlePacket;
 };
-
 
 #endif /* UDPSERVER_H_ */

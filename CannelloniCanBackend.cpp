@@ -6,14 +6,13 @@
 
 #include <QVector>
 
-CannelloniCanBackend::CannelloniCanBackend(QUrl local_, QUrl remote_) : local(local_), remote(remote_)
+CannelloniCanBackend::CannelloniCanBackend(QUrl local_, QUrl remote_)
+    : local(local_), remote(remote_)
 {
-
 }
 
 CannelloniCanBackend::~CannelloniCanBackend()
 {
-
 }
 
 bool CannelloniCanBackend::writeFrame(const QCanBusFrame& frame)
@@ -21,8 +20,8 @@ bool CannelloniCanBackend::writeFrame(const QCanBusFrame& frame)
     return true; // FIXME: implement
 }
 
-QString CannelloniCanBackend::interpretErrorFrame(
-        const QCanBusFrame& errorFrame)
+QString
+CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame& errorFrame)
 {
     return "Error frame received";
 }
@@ -32,12 +31,11 @@ bool CannelloniCanBackend::open()
     if (t.joinable())
         return false;
 
-    t = std::thread([this]()
-    {
+    t = std::thread([this]() {
         try
         {
-            auto handler = [this](std::array<uint8_t, 1500> buffer, std::size_t len)
-            {
+            auto handler = [this](std::array<uint8_t, 1500> buffer,
+                                  std::size_t len) {
                 handlePacket(buffer, len);
             };
 
@@ -61,16 +59,14 @@ void CannelloniCanBackend::close()
     t.join();
 }
 
-void CannelloniCanBackend::handlePacket(std::array<uint8_t, 1500> buffer, std::size_t len)
+void CannelloniCanBackend::handlePacket(std::array<uint8_t, 1500> buffer,
+                                        std::size_t len)
 {
-    auto allocator = []()
-    {
+    auto allocator = []() {
         return new canfd_frame; // FIXME: preallocate some buffer for frames
     };
 
-
-    auto receiver = [this](canfd_frame* frame, bool success)
-    {
+    auto receiver = [this](canfd_frame* frame, bool success) {
         QCanBusFrame f;
         if (frame->can_id & CAN_ERR_FLAG)
             f.setFrameType(QCanBusFrame::ErrorFrame);
