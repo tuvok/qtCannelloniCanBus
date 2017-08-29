@@ -66,7 +66,8 @@ void CannelloniCanBackend::handlePacket(std::array<uint8_t, 1500> buffer,
         return new canfd_frame; // FIXME: preallocate some buffer for frames
     };
 
-    auto receiver = [this](canfd_frame* frame, bool success) {
+    QVector<QCanBusFrame> newFrames;
+    auto receiver = [&](canfd_frame* frame, bool success) {
         QCanBusFrame f;
         if (frame->can_id & CAN_ERR_FLAG)
             f.setFrameType(QCanBusFrame::ErrorFrame);
@@ -85,13 +86,10 @@ void CannelloniCanBackend::handlePacket(std::array<uint8_t, 1500> buffer,
         a.append(reinterpret_cast<char*>(frame->data), frame->len);
         f.setPayload(a);
 
-        QVector<QCanBusFrame> v;
-        v.push_back(f);
-
-        enqueueReceivedFrames(v);
-
+        newFrames.push_back(f);
         delete frame;
     };
 
     parseFrames(len, buffer.data(), allocator, receiver);
+    enqueueReceivedFrames(newFrames);
 }
