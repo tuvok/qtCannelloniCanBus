@@ -4,33 +4,34 @@
 #include <QCanBusDevice>
 #include <QCanBusFrame>
 #include <QUrl>
-#include <QVector>
-
-#include <boost/asio/io_service.hpp>
-
-#include <thread>
+#include <QUdpSocket>
+#include <QTimer>
 
 class CannelloniCanBackend : public QCanBusDevice
 {
     Q_OBJECT
 public:
-    CannelloniCanBackend(QUrl local_, QUrl remote_);
-    virtual ~CannelloniCanBackend();
+    CannelloniCanBackend(quint16 localPort, const QHostAddress& remoteAddr, quint16 remotePort);
 
-    virtual bool writeFrame(const QCanBusFrame& frame);
-    virtual QString interpretErrorFrame(const QCanBusFrame& errorFrame);
+    bool writeFrame(const QCanBusFrame& frame) override;
+    QString interpretErrorFrame(const QCanBusFrame& errorFrame) override;
 
 protected:
-    virtual bool open();
-    virtual void close();
+    bool open() override;
+    void close() override;
+    void timerEvent(QTimerEvent*) override;
 
 private:
-    QUrl local;
-    QUrl remote;
-    boost::asio::io_service io_service;
-    std::thread t;
-
-    void handlePacket(std::array<uint8_t, 1500> buffer, std::size_t len);
+    quint16 localPort_;
+    QHostAddress remoteAddr_;
+    quint16 remotePort_;
+    QUdpSocket sock_;
+    int timerId_;
+    void handlePacket(const QByteArray& data);
+    
+private slots:
+    void dataAvailable();
+    void outQueueTimer();
 };
 
 #endif /* CANNELLONICANBACKEND_H_ */

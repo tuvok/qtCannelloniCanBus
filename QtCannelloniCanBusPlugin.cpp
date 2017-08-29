@@ -17,15 +17,8 @@ public:
                                 QString* errorMessage) const override
     {
         Q_UNUSED(errorMessage);
-        QStringList urls = interfaceName.split(QChar::Null);
-
-        if (urls.size() != 2)
-            return nullptr;
-
-        std::cout << "URL1: " << urls[0].toStdString() << std::endl;
-        std::cout << "URL2: " << urls[1].toStdString() << std::endl;
-
-        return new CannelloniCanBackend(urls[0], urls[1]);
+        Q_UNUSED(interfaceName);
+        return new CannelloniCanBackend(49999, QHostAddress::LocalHost, 50000);
     }
 };
 
