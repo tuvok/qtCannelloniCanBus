@@ -24,22 +24,23 @@ public:
         bool ok;
         const auto quint16max = std::numeric_limits<quint16>::max();
         auto localPort = tokens[0].toUInt(&ok);
-        if(!ok || localPort > quint16max) {
+        if (!ok || localPort > quint16max)
+        {
             *errorMessage = "Invalid local port format";
             return nullptr;
         }
         QHostAddress remoteAddr(tokens[1]);
-        if(remoteAddr.isNull()) {
+        if (remoteAddr.isNull())
+        {
             *errorMessage = "Invalid remote address format";
             return nullptr;
         }
         auto remotePort = tokens[2].toUInt(&ok);
-        if(!ok || remotePort > quint16max) {
+        if (!ok || remotePort > quint16max)
+        {
             *errorMessage = "Invalid remote port format";
             return nullptr;
         }
-        Q_UNUSED(errorMessage);
-        Q_UNUSED(interfaceName);
         return new CannelloniCanBackend(localPort, remoteAddr, remotePort);
     }
 };
