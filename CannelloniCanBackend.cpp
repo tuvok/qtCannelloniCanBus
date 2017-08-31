@@ -63,7 +63,7 @@ canfd_frame convert(const QCanBusFrame& qtFrame)
 
     memcpy(frame.data, payload.data(), payload.size());
     frame.len = payload.size();
-    
+
     return frame;
 }
 }
@@ -71,8 +71,8 @@ canfd_frame convert(const QCanBusFrame& qtFrame)
 CannelloniCanBackend::CannelloniCanBackend(quint16 localPort,
                                            const QHostAddress& remoteAddr,
                                            quint16 remotePort)
-    : localPort_(localPort), remoteAddr_(remoteAddr), remotePort_(remotePort)
-    , timerId_(0)
+    : localPort_(localPort), remoteAddr_(remoteAddr), remotePort_(remotePort),
+      timerId_(0)
 {
 }
 

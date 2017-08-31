@@ -2,16 +2,14 @@
 #define CANNELLONICANBACKEND_H_
 
 #include <QCanBusDevice>
-#include <QCanBusFrame>
-#include <QUrl>
 #include <QUdpSocket>
-#include <QTimer>
 
 class CannelloniCanBackend : public QCanBusDevice
 {
     Q_OBJECT
 public:
-    CannelloniCanBackend(quint16 localPort, const QHostAddress& remoteAddr, quint16 remotePort);
+    CannelloniCanBackend(quint16 localPort, const QHostAddress& remoteAddr,
+                         quint16 remotePort);
 
     bool writeFrame(const QCanBusFrame& frame) override;
     QString interpretErrorFrame(const QCanBusFrame& errorFrame) override;
@@ -28,7 +26,7 @@ private:
     QUdpSocket sock_;
     int timerId_;
     void handlePacket(const QByteArray& data);
-    
+
 private slots:
     void dataAvailable();
     void outQueueTimer();
