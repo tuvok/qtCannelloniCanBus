@@ -43,10 +43,15 @@ canfd_frame convert(const QCanBusFrame& qtFrame)
     case QCanBusFrame::ErrorFrame:
         frame.can_id |= CAN_ERR_FLAG;
         break;
+
     case QCanBusFrame::RemoteRequestFrame:
         frame.can_id |= CAN_RTR_FLAG;
         break;
+
+    default:
+        break;
     }
+
     if (qtFrame.hasExtendedFrameFormat())
     {
         frame.can_id |= CAN_EFF_FLAG;
@@ -82,8 +87,7 @@ bool CannelloniCanBackend::writeFrame(const QCanBusFrame& frame)
     return true;
 }
 
-QString
-CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame& errorFrame)
+QString CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame& errorFrame)
 {
     return "Error frame received";
 }
@@ -190,6 +194,7 @@ void CannelloniCanBackend::handlePacket(const QByteArray& data)
     parseFrames(static_cast<uint16_t>(data.length()),
                 reinterpret_cast<const uint8_t*>(data.constData()), allocator,
                 receiver);
+
     qDebug() << "Received" << newFrames.size() << "new frames";
     enqueueReceivedFrames(newFrames);
 }
