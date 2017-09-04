@@ -1,0 +1,3 @@
+[submodule "cannelloni"]
+	path = cannelloni
+	url = https://github.com/mguentner/cannelloni.git
