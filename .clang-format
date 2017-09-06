@@ -4,3 +4,6 @@ BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: None
 PointerAlignment: Left
 AccessModifierOffset: -4
+ColumnLimit: 80
+PenaltyReturnTypeOnItsOwnLine: 600
+

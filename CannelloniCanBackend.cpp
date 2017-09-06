@@ -71,7 +71,7 @@ canfd_frame convert(const QCanBusFrame& qtFrame)
 
     return frame;
 }
-}
+} // namespace
 
 CannelloniCanBackend::CannelloniCanBackend(quint16 localPort,
                                            const QHostAddress& remoteAddr,

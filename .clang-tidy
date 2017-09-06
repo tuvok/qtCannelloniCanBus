@@ -1,0 +1,7 @@
+---
+Checks:          '*,-google*,-readability-braces-around-statements,-readability-implicit-bool-cast,-cppcoreguidelines-pro-type-reinterpret-cast'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+...
+
