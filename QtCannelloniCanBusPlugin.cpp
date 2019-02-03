@@ -18,7 +18,7 @@ public:
         auto tokens = interfaceName.split(QChar(','));
         if (tokens.size() != 3)
         {
-            *errorMessage = "Invalid inteface name format";
+            *errorMessage = "Invalid interface name format";
             return nullptr;
         }
         bool ok;
