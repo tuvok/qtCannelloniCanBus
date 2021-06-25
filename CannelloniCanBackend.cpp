@@ -87,7 +87,7 @@ bool CannelloniCanBackend::writeFrame(const QCanBusFrame& frame)
     return true;
 }
 
-QString CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame& errorFrame)
+QString CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame&)
 {
     return "Error frame received";
 }
@@ -186,7 +186,7 @@ void CannelloniCanBackend::handlePacket(const QByteArray& data)
     };
 
     QVector<QCanBusFrame> newFrames;
-    auto receiver = [&](canfd_frame* frame, bool success) {
+    auto receiver = [&](canfd_frame* frame, bool) {
         newFrames.push_back(convert(*frame));
         delete frame;
     };
