@@ -73,10 +73,12 @@ canfd_frame convert(const QCanBusFrame& qtFrame)
 }
 } // namespace
 
-CannelloniCanBackend::CannelloniCanBackend(quint16 localPort,
+CannelloniCanBackend::CannelloniCanBackend(const QHostAddress& localAddr,
+                                           quint16 localPort,
                                            const QHostAddress& remoteAddr,
                                            quint16 remotePort)
-    : localPort_(localPort), remoteAddr_(remoteAddr), remotePort_(remotePort),
+    : localAddr_(localAddr), localPort_(localPort),
+      remoteAddr_(remoteAddr), remotePort_(remotePort),
       timerId_(0)
 {
 }
@@ -95,7 +97,7 @@ QString CannelloniCanBackend::interpretErrorFrame(const QCanBusFrame&)
 bool CannelloniCanBackend::open()
 {
     Q_ASSERT(!sock_.isOpen());
-    if (!sock_.bind(QHostAddress::LocalHost, localPort_))
+    if (!sock_.bind(localAddr_, localPort_))
     {
         setState(QCanBusDevice::UnconnectedState);
         return false;

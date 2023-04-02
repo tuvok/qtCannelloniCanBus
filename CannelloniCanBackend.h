@@ -8,8 +8,8 @@ class CannelloniCanBackend : public QCanBusDevice
 {
     Q_OBJECT
 public:
-    CannelloniCanBackend(quint16 localPort, const QHostAddress& remoteAddr,
-                         quint16 remotePort);
+    CannelloniCanBackend(const QHostAddress& localAddr, quint16 localPort,
+                         const QHostAddress& remoteAddr, quint16 remotePort);
 
     bool writeFrame(const QCanBusFrame& frame) override;
     QString interpretErrorFrame(const QCanBusFrame& errorFrame) override;
@@ -20,6 +20,7 @@ protected:
     void timerEvent(QTimerEvent*) override;
 
 private:
+    QHostAddress localAddr_;
     quint16 localPort_;
     QHostAddress remoteAddr_;
     quint16 remotePort_;

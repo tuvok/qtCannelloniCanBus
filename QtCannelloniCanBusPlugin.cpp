@@ -15,33 +15,45 @@ public:
     QCanBusDevice* createDevice(const QString& interfaceName,
                                 QString* errorMessage) const override
     {
+        static constexpr auto quint16max = std::numeric_limits<quint16>::max();
+
         auto tokens = interfaceName.split(QChar(','));
-        if (tokens.size() != 3)
+        if (tokens.size() < 2 || tokens.size() > 4)
         {
             *errorMessage = "Invalid interface name format";
             return nullptr;
         }
-        bool ok;
-        const auto quint16max = std::numeric_limits<quint16>::max();
-        auto localPort = tokens[0].toUInt(&ok);
-        if (!ok || localPort > quint16max)
+        qsizetype tokenIndex = 0;
+        QHostAddress localAddr(QHostAddress::AnyIPv4);
+        if (tokens.size() > 3 && !localAddr.setAddress(tokens[tokenIndex++]))
         {
-            *errorMessage = "Invalid local port format";
+            *errorMessage = "Invalid local address format";
             return nullptr;
         }
-        QHostAddress remoteAddr(tokens[1]);
+        bool ok;
+        uint localPort = 0;
+        if (tokens.size() > 2)
+        {
+            localPort = tokens[tokenIndex++].toUInt(&ok);
+            if (!ok || localPort > quint16max)
+            {
+                *errorMessage = "Invalid local port format";
+                return nullptr;
+            }
+        }
+        QHostAddress remoteAddr(tokens[tokenIndex++]);
         if (remoteAddr.isNull())
         {
             *errorMessage = "Invalid remote address format";
             return nullptr;
         }
-        auto remotePort = tokens[2].toUInt(&ok);
+        auto remotePort = tokens[tokenIndex++].toUInt(&ok);
         if (!ok || remotePort > quint16max)
         {
             *errorMessage = "Invalid remote port format";
             return nullptr;
         }
-        return new CannelloniCanBackend(localPort, remoteAddr, remotePort);
+        return new CannelloniCanBackend(localAddr, localPort, remoteAddr, remotePort);
     }
 };
 
