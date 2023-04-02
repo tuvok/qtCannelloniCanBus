@@ -20,14 +20,20 @@ public:
         auto tokens = interfaceName.split(QChar(','));
         if (tokens.size() < 2 || tokens.size() > 4)
         {
-            *errorMessage = "Invalid interface name format";
+            if (errorMessage)
+            {
+                *errorMessage = "Invalid interface name format";
+            }
             return nullptr;
         }
         qsizetype tokenIndex = 0;
         QHostAddress localAddr(QHostAddress::AnyIPv4);
         if (tokens.size() > 3 && !localAddr.setAddress(tokens[tokenIndex++]))
         {
-            *errorMessage = "Invalid local address format";
+            if (errorMessage)
+            {
+                *errorMessage = "Invalid local address format";
+            }
             return nullptr;
         }
         bool ok;
@@ -37,20 +43,29 @@ public:
             localPort = tokens[tokenIndex++].toUInt(&ok);
             if (!ok || localPort > quint16max)
             {
-                *errorMessage = "Invalid local port format";
+                if (errorMessage)
+                {
+                    *errorMessage = "Invalid local port format";
+                }
                 return nullptr;
             }
         }
         QHostAddress remoteAddr(tokens[tokenIndex++]);
         if (remoteAddr.isNull())
         {
-            *errorMessage = "Invalid remote address format";
+            if (errorMessage)
+            {
+                *errorMessage = "Invalid remote address format";
+            }
             return nullptr;
         }
         auto remotePort = tokens[tokenIndex++].toUInt(&ok);
         if (!ok || remotePort > quint16max)
         {
-            *errorMessage = "Invalid remote port format";
+            if (errorMessage)
+            {
+                *errorMessage = "Invalid remote port format";
+            }
             return nullptr;
         }
         return new CannelloniCanBackend(localAddr, localPort, remoteAddr, remotePort);
