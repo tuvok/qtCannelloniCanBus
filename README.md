@@ -1,3 +1,7 @@
+# Project unsupported
+
+This project is currently unsupported. I developed this code as part of my employment contract with Mobica, which finished years ago. I currently have no time or resources to further develop or maintain this project (including reviewing and testing of pull-requests). Please check the available forks, I know various people improved on this code.
+
 # What is qtCannelloniCanBus ?
 
 qtCannelloniCanBus is a qtCanBus plugin that can communicate through Cannelloni (https://github.com/mguentner/cannelloni) protocol.
