@@ -12,6 +12,12 @@ class QtCannelloniCanBusPlugin : public QObject, public QCanBusFactory
     Q_INTERFACES(QCanBusFactory)
 
 public:
+    QList<QCanBusDeviceInfo> availableDevices(QString *errorMessage) const
+    {
+        *errorMessage = "Devices cannot be enumerated for 'cannelloni' backend";
+        return QList<QCanBusDeviceInfo>();
+    }
+
     QCanBusDevice* createDevice(const QString& interfaceName,
                                 QString* errorMessage) const override
     {
